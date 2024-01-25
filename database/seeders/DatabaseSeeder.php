@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Discipline;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,7 +16,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(
             [
-                EmployeeSeeder::class
+                EmployeeSeeder::class,
+                RelativeSeeder::class,
+                RelationshipSeeder::class,
+                DisciplineSeeder::class,
+                EmployeeDisciplineSeeder::class,
             ]
         );
         // \App\Models\User::factory(10)->create();
