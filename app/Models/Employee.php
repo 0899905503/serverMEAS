@@ -7,7 +7,6 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -25,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $tongiao
  * @property string $cccd
  * @property Carbon $ngaycap
+ * @property string $maphucap
  * @property string $noicap
  * @property Carbon $ngayvaolam
  * @property string|null $ngoaingu
@@ -33,9 +33,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $mabacluong
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
- * @property Collection|Discipline[] $disciplines
- * @property Relationship $relationship
  *
  * @package App\Models
  */
@@ -62,24 +59,12 @@ class Employee extends Model
 		'tongiao',
 		'cccd',
 		'ngaycap',
+		'maphucap',
 		'noicap',
 		'ngayvaolam',
 		'ngoaingu',
 		'tinhoc',
 		'diachithuongtru',
-		'mabacluong',
-		'maklnv'
+		'mabacluong'
 	];
-
-	public function disciplines()
-	{
-		return $this->belongsToMany(Discipline::class, 'employeedisciplines', 'manv', 'makyluat')
-			->withPivot('maklnv', 'lydo', 'ngaykyluat')
-			->withTimestamps();
-	}
-
-	public function relationship()
-	{
-		return $this->hasOne(Relationship::class, 'manv');
-	}
 }

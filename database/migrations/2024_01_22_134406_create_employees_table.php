@@ -24,12 +24,15 @@ return new class extends Migration
             $table->string('tongiao', 50)->nullable();
             $table->string('cccd', 20);
             $table->dateTime('ngaycap');
+
             $table->string('noicap', 50);
             $table->dateTime('ngayvaolam');
             $table->string('ngoaingu', 50)->nullable();
             $table->string('tinhoc', 50);
             $table->string('diachithuongtru', 50);
             $table->string('mabacluong', 10);
+            $table->unsignedBigInteger('maphucap');
+            $table->foreign('maphucap')->references('maphucap')->on('subsidies')->cascadeOnDelete();
             // $table->string('name',50)->nullable() ->> nullable() : mac dinh true duoc phep null
             $table->timestamps();
         });

@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('lydo');
             $table->dateTime('ngaykyluat');
             $table->timestamps();
-            $table->foreign('manv')->references('manv')->on('employees');
-            $table->foreign('makyluat')->references('makyluat')->on('disciplines');
+            $table->foreign('manv')->references('manv')->on('employees')->cascadeOnDelete();
+            $table->foreign('makyluat')->references('makyluat')->on('disciplines')->cascadeOnDelete();
         });
     }
 
