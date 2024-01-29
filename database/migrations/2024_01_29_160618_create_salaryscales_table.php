@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('salaryscales', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('mangach');
-            $table->float('bacluong');
+            $table->string('bacluong');
             $table->float('hesoluong');
             $table->foreign('mangach')->references('id')->on('ranks')->onDelete('cascade');
+            $table->unsignedBigInteger('manv');
+            $table->foreign('manv')->references('id')->on('employees')->onDelete('cascade');
             $table->timestamps();
         });
     }

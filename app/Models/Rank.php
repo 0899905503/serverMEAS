@@ -7,36 +7,31 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Role
+ * Class Rank
  * 
  * @property int $id
- * @property string $tenchucvu
- * @property int $manv
+ * @property string $tenngach
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Employee $employee
+ * @property Collection|Salaryscale[] $salaryscales
  *
  * @package App\Models
  */
-class Role extends Model
+class Rank extends Model
 {
-	protected $table = 'roles';
-
-	protected $casts = [
-		'manv' => 'int'
-	];
+	protected $table = 'ranks';
 
 	protected $fillable = [
-		'tenchucvu',
-		'manv'
+		'tenngach'
 	];
 
-	public function employee()
+	public function salaryscales()
 	{
-		return $this->belongsTo(Employee::class, 'manv');
+		return $this->hasMany(Salaryscale::class, 'mangach');
 	}
 }

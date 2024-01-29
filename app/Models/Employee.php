@@ -7,12 +7,13 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Employee
  * 
- * @property int $manv
+ * @property int $id
  * @property string $tennv
  * @property string $gioitinh
  * @property Carbon $ngaysinh
@@ -24,22 +25,25 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $tongiao
  * @property string $cccd
  * @property Carbon $ngaycap
- * @property string $maphucap
  * @property string $noicap
  * @property Carbon $ngayvaolam
  * @property string|null $ngoaingu
  * @property string $tinhoc
  * @property string $diachithuongtru
- * @property string $mabacluong
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * 
+ * @property Collection|Discipline[] $disciplines
+ * @property Relationship $relationship
+ * @property Collection|Role[] $roles
+ * @property Collection|Salaryscale[] $salaryscales
+ * @property Collection|Subsidy[] $subsidies
  *
  * @package App\Models
  */
 class Employee extends Model
 {
 	protected $table = 'employees';
-	protected $primaryKey = 'manv';
 
 	protected $casts = [
 		'ngaysinh' => 'datetime',
@@ -59,12 +63,37 @@ class Employee extends Model
 		'tongiao',
 		'cccd',
 		'ngaycap',
-		'maphucap',
 		'noicap',
 		'ngayvaolam',
 		'ngoaingu',
 		'tinhoc',
-		'diachithuongtru',
-		'mabacluong'
+		'diachithuongtru'
 	];
+
+	public function disciplines()
+	{
+		return $this->belongsToMany(Discipline::class, 'employeedisciplines', 'manv', 'makyluat')
+					->withPivot('id', 'lydo', 'ngaykyluat')
+					->withTimestamps();
+	}
+
+	public function relationship()
+	{
+		return $this->hasOne(Relationship::class, 'manv');
+	}
+
+	public function roles()
+	{
+		return $this->hasMany(Role::class, 'manv');
+	}
+
+	public function salaryscales()
+	{
+		return $this->hasMany(Salaryscale::class, 'manv');
+	}
+
+	public function subsidies()
+	{
+		return $this->hasMany(Subsidy::class, 'manv');
+	}
 }

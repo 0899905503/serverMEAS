@@ -31,7 +31,7 @@ class EmployeeSeeder extends Seeder
                 'ngoaingu' => 'IELTS',
                 'tinhoc' => 'B1',
                 'diachithuongtru' => 'thon long phung',
-                'mabacluong' => '12'
+
             ],
             [
                 'tennv' => 'anhvo',
@@ -49,10 +49,10 @@ class EmployeeSeeder extends Seeder
                 'ngoaingu' => 'IELTS',
                 'tinhoc' => 'B1',
                 'diachithuongtru' => 'thon long phung',
-                'mabacluong' => '12'
+
             ],
             [
-                'tennv' => 'baovo',
+                'tennv' => 'tuyen',
                 'gioitinh' => 'nam',
                 'ngaysinh' => '2003-05-03',
                 'diachi' => 'phu hoa',
@@ -67,10 +67,10 @@ class EmployeeSeeder extends Seeder
                 'ngoaingu' => 'IELTS',
                 'tinhoc' => 'B1',
                 'diachithuongtru' => 'thon long phung',
-                'mabacluong' => '12'
+
             ],
             [
-                'tennv' => 'baovo',
+                'tennv' => 'kieu',
                 'gioitinh' => 'nam',
                 'ngaysinh' => '2003-05-03',
                 'diachi' => 'phu hoa',
@@ -85,10 +85,10 @@ class EmployeeSeeder extends Seeder
                 'ngoaingu' => 'IELTS',
                 'tinhoc' => 'B1',
                 'diachithuongtru' => 'thon long phung',
-                'mabacluong' => '12'
+
             ],
             [
-                'tennv' => 'baovo',
+                'tennv' => 'van',
                 'gioitinh' => 'nam',
                 'ngaysinh' => '2003-05-03',
                 'diachi' => 'phu hoa',
@@ -103,10 +103,10 @@ class EmployeeSeeder extends Seeder
                 'ngoaingu' => 'IELTS',
                 'tinhoc' => 'B1',
                 'diachithuongtru' => 'thon long phung',
-                'mabacluong' => '12'
+
             ],
             [
-                'tennv' => 'baovo',
+                'tennv' => 'thuong',
                 'gioitinh' => 'nam',
                 'ngaysinh' => '2003-05-03',
                 'diachi' => 'phu hoa',
@@ -121,10 +121,10 @@ class EmployeeSeeder extends Seeder
                 'ngoaingu' => 'IELTS',
                 'tinhoc' => 'B1',
                 'diachithuongtru' => 'thon long phung',
-                'mabacluong' => '12'
+
             ],
             [
-                'tennv' => 'baovo',
+                'tennv' => 'ngoc',
                 'gioitinh' => 'nam',
                 'ngaysinh' => '2003-05-03',
                 'diachi' => 'phu hoa',
@@ -139,7 +139,7 @@ class EmployeeSeeder extends Seeder
                 'ngoaingu' => 'IELTS',
                 'tinhoc' => 'B1',
                 'diachithuongtru' => 'thon long phung',
-                'mabacluong' => '12'
+
             ],
         ];
         foreach ($employees as $employee) {

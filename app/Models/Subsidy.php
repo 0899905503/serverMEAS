@@ -10,42 +10,33 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Employeediscipline
+ * Class Subsidy
  * 
  * @property int $id
  * @property int $manv
- * @property int $makyluat
- * @property string $lydo
- * @property Carbon $ngaykyluat
+ * @property string $tenphucap
+ * @property Carbon $thang
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Discipline $discipline
  * @property Employee $employee
  *
  * @package App\Models
  */
-class Employeediscipline extends Model
+class Subsidy extends Model
 {
-	protected $table = 'employeedisciplines';
+	protected $table = 'subsidies';
 
 	protected $casts = [
 		'manv' => 'int',
-		'makyluat' => 'int',
-		'ngaykyluat' => 'datetime'
+		'thang' => 'datetime'
 	];
 
 	protected $fillable = [
 		'manv',
-		'makyluat',
-		'lydo',
-		'ngaykyluat'
+		'tenphucap',
+		'thang'
 	];
-
-	public function discipline()
-	{
-		return $this->belongsTo(Discipline::class, 'makyluat');
-	}
 
 	public function employee()
 	{

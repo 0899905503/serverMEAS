@@ -29,8 +29,10 @@ return new class extends Migration
             $table->string('ngoaingu', 50)->nullable();
             $table->string('tinhoc', 50);
             $table->string('diachithuongtru', 50);
-            $table->foreignId('mabacluong_id')->constrained('salaryscales');
-            $table->foreignId('maphucap_id')->constrained('subsidies');
+            // $table->unsignedBigInteger('mabacluong_id');
+            // $table->foreign('mabacluong_id')->references('id')->on('salaryscales');
+            // $table->unsignedBigInteger('maphucap_id');
+            // $table->foreign('maphucap_id')->references('id')->on('subsidies');
             // $table->string('name',50)->nullable() ->> nullable() : mac dinh true duoc phep null
             $table->timestamps();
         });

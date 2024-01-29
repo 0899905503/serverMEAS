@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Relative
  * 
- * @property int $matn
+ * @property int $id
  * @property string $hotentn
  * @property Carbon $ngaysinh
  * @property string $diachi
@@ -26,7 +26,6 @@ use Illuminate\Database\Eloquent\Model;
 class Relative extends Model
 {
 	protected $table = 'relatives';
-	protected $primaryKey = 'matn';
 
 	protected $casts = [
 		'ngaysinh' => 'datetime'

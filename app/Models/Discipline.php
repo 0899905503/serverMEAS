@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Discipline
  * 
- * @property int $MaKyLuat
- * @property string $Hinh Thuc
+ * @property int $id
+ * @property string $hinhthuc
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
@@ -25,7 +25,6 @@ use Illuminate\Database\Eloquent\Model;
 class Discipline extends Model
 {
 	protected $table = 'disciplines';
-	protected $primaryKey = 'MaKyLuat';
 
 	protected $fillable = [
 		'hinhthuc'
@@ -34,7 +33,7 @@ class Discipline extends Model
 	public function employees()
 	{
 		return $this->belongsToMany(Employee::class, 'employeedisciplines', 'makyluat', 'manv')
-			->withPivot('maklnv', 'lydo', 'ngaykyluat')
-			->withTimestamps();
+					->withPivot('id', 'lydo', 'ngaykyluat')
+					->withTimestamps();
 	}
 }
