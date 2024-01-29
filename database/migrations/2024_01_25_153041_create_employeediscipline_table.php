@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('employeedisciplines', function (Blueprint $table) {
-            $table->id('maklnv');
+            $table->id();
             $table->unsignedBigInteger('manv');
             $table->unsignedBigInteger('makyluat');
             $table->string('lydo');
             $table->dateTime('ngaykyluat');
+            $table->foreign('manv')->references('id')->on('employees')->onDelete('cascade');
+            $table->foreign('makyluat')->references('id')->on('disciplines')->onDelete('cascade');
             $table->timestamps();
-            $table->foreign('manv')->references('manv')->on('employees')->cascadeOnDelete();
-            $table->foreign('makyluat')->references('makyluat')->on('disciplines')->cascadeOnDelete();
         });
     }
 

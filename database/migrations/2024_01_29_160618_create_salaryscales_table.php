@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ranks', function (Blueprint $table) {
+        Schema::create('salaryscales', function (Blueprint $table) {
             $table->id();
-            $table->string('tenngach');
+            $table->unsignedBigInteger('mangach');
+            $table->float('bacluong');
+            $table->float('hesoluong');
+            $table->foreign('mangach')->references('id')->on('ranks')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ranks');
+        Schema::dropIfExists('salaryscales');
     }
 };
