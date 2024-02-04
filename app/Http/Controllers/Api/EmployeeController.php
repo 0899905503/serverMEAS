@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
-use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class EmployeeController extends Controller
 {
-    public function index(Request $request)
+    public function show(Request $request)
     {
-        return User::get();
+        return Employee::get();
     }
 }
