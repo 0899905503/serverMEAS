@@ -8,8 +8,13 @@ use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    public function show(Request $request)
+    public function getEmployeeInfo($employeeId)
     {
-        return Employee::get();
+        try {
+            $employee = Employee::findOrFail($employeeId);
+            return response()->json(['success' => true, 'data' => $employee], 200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 }

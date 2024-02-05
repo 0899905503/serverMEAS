@@ -24,7 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/users', [UserController::class, 'index']);
 
 //_____________________EMPLOYEE__________________________
-Route::get('/employees', [EmployeeController::class, 'show'])->middleware('auth:sanctum');
+Route::get('/employee/{employeeId}', [EmployeeController::class, 'getEmployeeInfo'])->middleware('auth:sanctum');
 
 //_____________________LOGIN AND REGISTER__________________________
 Route::post('/auth/signup', [AuthController::class, 'signup']);
