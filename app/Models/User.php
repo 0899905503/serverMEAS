@@ -7,7 +7,10 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * Class User
@@ -25,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class User extends Model
 {
+	use HasApiTokens, HasFactory, Notifiable;
 	protected $table = 'users';
 
 	protected $casts = [
@@ -39,8 +43,15 @@ class User extends Model
 	protected $fillable = [
 		'name',
 		'email',
+		'first_name',
+		'last_name',
 		'email_verified_at',
 		'password',
-		'remember_token'
+		'remember_token',
+		'address',
+		'phone_number',
+		'gender',
+		'birth_date',
+		'is_active'
 	];
 }

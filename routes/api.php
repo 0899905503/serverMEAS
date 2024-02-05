@@ -24,8 +24,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/users', [UserController::class, 'index']);
 
 //_____________________EMPLOYEE__________________________
-Route::get('/employees', [EmployeeController::class, 'show']);
+Route::get('/employees', [EmployeeController::class, 'show'])->middleware('auth:sanctum');
 
 //_____________________LOGIN AND REGISTER__________________________
-Route::post('/auth/register', [AuthController::class, 'register']);
-Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/signup', [AuthController::class, 'signup']);
+Route::post('/auth/signin', [AuthController::class, 'signin']);
+// Route::prefix('/auth')->controller(AuthController::class)->group(function () {
+//     Route::post('/login', 'login');
+//     Route::middleware('auth:sanctum')->group(function () {
+//         Route::post('/logout', 'logout');
+//         Route::post('/change-password', 'changePassword');
+//     });
+// });
