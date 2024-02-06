@@ -9,8 +9,13 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function getUserInfo($employeeId)
     {
-        return User::get();
+        try {
+            $user = User::findOrFail($employeeId);
+            return response()->json(['success' => true, 'data' => $user], 200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 }
