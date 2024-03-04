@@ -40,6 +40,6 @@ class Subsidy extends Model
 
 	public function employee()
 	{
-		return $this->belongsTo(Employee::class, 'manv');
+		return $this->belongsTo(User::class, 'manv');
 	}
 }

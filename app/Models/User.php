@@ -6,9 +6,9 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -26,7 +26,7 @@ use Laravel\Sanctum\HasApiTokens;
  *
  * @package App\Models
  */
-class User extends Model
+class User extends Authenticatable
 {
 	use HasApiTokens, HasFactory, Notifiable;
 	protected $table = 'users';
@@ -54,4 +54,8 @@ class User extends Model
 		'birth_date',
 		'is_active'
 	];
+	public function role()
+	{
+		return $this->belongsTo(Role::class, 'Role_id', 'id');
+	}
 }

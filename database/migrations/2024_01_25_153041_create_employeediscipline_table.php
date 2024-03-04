@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('makyluat');
             $table->string('lydo');
             $table->dateTime('ngaykyluat');
-            $table->foreign('manv')->references('id')->on('employees')->onDelete('cascade');
+            $table->foreign('manv')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('makyluat')->references('id')->on('disciplines')->onDelete('cascade');
             $table->timestamps();
         });

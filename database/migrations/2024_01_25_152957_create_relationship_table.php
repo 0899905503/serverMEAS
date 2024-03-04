@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('relationships', function (Blueprint $table) {
             $table->unsignedBigInteger('manv');
             $table->unsignedBigInteger('matn');
-            $table->foreign('manv')->references('id')->on('employees')->onDelete('cascade');
+            $table->foreign('manv')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('matn')->references('id')->on('relatives')->onDelete('cascade');
             $table->string('loaiquanhe');
             $table->timestamps();

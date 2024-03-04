@@ -18,7 +18,7 @@ return new class extends Migration
             $table->float('hesoluong');
             $table->foreign('mangach')->references('id')->on('ranks')->onDelete('cascade');
             $table->unsignedBigInteger('manv');
-            $table->foreign('manv')->references('id')->on('employees')->onDelete('cascade');
+            $table->foreign('manv')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

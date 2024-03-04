@@ -32,8 +32,8 @@ class Discipline extends Model
 
 	public function employees()
 	{
-		return $this->belongsToMany(Employee::class, 'employeedisciplines', 'makyluat', 'manv')
-					->withPivot('id', 'lydo', 'ngaykyluat')
-					->withTimestamps();
+		return $this->belongsToMany(User::class, 'employeedisciplines', 'makyluat', 'manv')
+			->withPivot('id', 'lydo', 'ngaykyluat')
+			->withTimestamps();
 	}
 }

@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\EmployeeController;
+use App\Http\Controllers\Api\RelativeController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\RoleController;
 use App\Models\Employee;
+use App\Models\Relative;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,14 +24,30 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/users', [UserController::class, 'index']);
-
+Route::get('/users', [UserController::class, 'getUserInfo'])->middleware('auth:sanctum');
+Route::get('/getAllUsers', [UserController::class, 'getAllUser']);
+Route::get('/getUserById/{id}', [UserController::class, 'getUserById']);
 //_____________________EMPLOYEE__________________________
-Route::get('/employee/{employeeId}', [EmployeeController::class, 'getEmployeeInfo'])->middleware('auth:sanctum');
+//oute::get('/employee/{employeeId}', [EmployeeController::class, 'getEmployeeInfo'])->middleware('auth:sanctum');
+
+
+// ROLEs
+
+Route::get('/getRoleById/{id}', [RoleController::class, 'getRoleById']);
 
 //_____________________LOGIN AND REGISTER__________________________
-Route::post('/auth/signup', [AuthController::class, 'signup']);
-Route::post('/auth/signin', [AuthController::class, 'signin']);
+Route::post('/auth/register', [AuthController::class, 'createUser']);
+Route::post('/auth/login', [AuthController::class, 'loginUser']);
+
+// Get Ralatives
+
+Route::get('/getRelativesAndRelationships/{id}', [RelativeController::class, 'getRelativesAndRelationships']);
+Route::get('/getRelative', [RelativeController::class, 'getRelative']);
+Route::get('/getRelationship', [RelativeController::class, 'getRelationship']);
+
+
+//Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
+
 // Route::prefix('/auth')->controller(AuthController::class)->group(function () {
 //     Route::post('/login', 'login');
 //     Route::middleware('auth:sanctum')->group(function () {

@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('subsidies', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('manv');
-            $table->foreign('manv')->references('id')->on('employees')->onDelete('cascade');
+
             $table->string('tenphucap');
             $table->dateTime('thang');
             $table->timestamps();

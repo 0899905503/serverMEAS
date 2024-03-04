@@ -15,32 +15,32 @@ class SubsidySeeder extends Seeder
     {
         $subsidies = [
             [
-                'manv' => 1,
+
                 'tenphucap' => 'phucapchucvu',
                 'thang' => now()->month()
             ],
             [
-                'manv' => 2,
+
                 'tenphucap' => 'phucapkhuvuc',
                 'thang' => now()->month()
             ],
             [
-                'manv' => 3,
+
                 'tenphucap' => 'phucapthamnien',
                 'thang' => now()->month()
             ],
             [
-                'manv' => 4,
+
                 'tenphucap' => 'phucapdilai',
                 'thang' => now()->month()
             ],
             [
-                'manv' => 5,
+
                 'tenphucap' => 'phucapthoivu',
                 'thang' => now()->month()
             ],
             [
-                'manv' => 6,
+
                 'tenphucap' => 'phucapcadem',
                 'thang' => now()->month()
             ],

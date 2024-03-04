@@ -15,23 +15,23 @@ class RoleSeeder extends Seeder
     {
         $roles = [
             [
-                'manv' => '1',
+
                 'tenchucvu' => 'nhan vien',
             ],
             [
-                'manv' => '2',
+
                 'tenchucvu' => 'truong phong',
             ],
             [
-                'manv' => '3',
+
                 'tenchucvu' => 'pho giam doc',
             ],
             [
-                'manv' => '4',
+
                 'tenchucvu' => 'giam doc',
             ],
             [
-                'manv' => '5',
+
                 'tenchucvu' => 'chu tich',
             ],
         ];

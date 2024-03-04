@@ -9,13 +9,24 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function getUserInfo($employeeId)
+    public function getUserInfo()
     {
-        try {
-            $user = User::findOrFail($employeeId);
-            return response()->json(['success' => true, 'data' => $user], 200);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        $user = request()->user();
+        return $user;
+    }
+    public function getAllUser()
+    {
+        $users = User::all();
+        return response()->json(['users' => $users], 200);
+    }
+    public function getUserById($id)
+    {
+        $employee = User::find($id);
+
+        if (!$employee) {
+            return response()->json(['error' => 'Employee not found.'], 404);
         }
+
+        return response()->json(['employee' => $employee], 200);
     }
 }
