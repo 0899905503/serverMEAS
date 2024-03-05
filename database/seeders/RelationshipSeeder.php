@@ -35,8 +35,8 @@ class RelationshipSeeder extends Seeder
                 'loaiquanhe' => 'chi'
             ],
             [
-                'manv' => 5,
-                'matn' => 5,
+                'manv' => 1,
+                'matn' => 1,
                 'loaiquanhe' => 'em'
             ],
 

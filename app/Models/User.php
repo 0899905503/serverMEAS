@@ -41,6 +41,8 @@ class User extends Authenticatable
 	];
 
 	protected $fillable = [
+		'Personal_id',
+		'Qualification',
 		'name',
 		'email',
 		'first_name',
@@ -52,7 +54,18 @@ class User extends Authenticatable
 		'phone_number',
 		'gender',
 		'birth_date',
-		'is_active'
+		'is_active',
+		'Nationality',
+		'Ethnicity',
+		'Religion',
+		'Issue_Date',
+		'Issued_By',
+		'Start_Date',
+		'Language',
+		'Computer_Science',
+		'Permanent_Address',
+		'avatar',
+		'Role_id'
 	];
 	public function role()
 	{

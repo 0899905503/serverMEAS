@@ -11,62 +11,7 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
-// class AuthController extends Controller
-// {
-//     //
-//     public function signup(Request $request)
-//     {
-//         //validate
-//         $request->validate(
-//             [
-// 'email' => 'required|string|unique:users',
-// 'password' => 'required|string|min:8',
-// 'first_name' => 'required|string',
-// 'last_name' => 'required|string',
-// 'phone_number' => 'required',
-// 'gender' => 'required',
-// 'is_active' => 'required',
-// 'address' => 'required'
 
-//             ]
-//         );
-//         // if ($request->fails()) {
-//         //     return response()->json($request->errors(), 400);
-//         // }
-//         $user = User::create([
-//             'email' => $request->email,
-//             'password' => Hash::make($request->password),
-//             'first_name' => $request->first_name,
-//             'last_name' => $request->last_name,
-//             'phone_number' => $request->phone_number,
-//             'gender' => $request->gender,
-//             'is_active' => $request->is_active,
-//             'birth_date' => now(),
-//             'address' => $request->address
-//         ]);
-
-// $token = $user->createToken('Personal access token')->plainTextToken;
-// $response = ['user' => $user, 'token' => $token];
-//         return response()->json($response, 200);
-//     }
-
-//     function signin(Request $request)
-//     {
-//         $user = User::where('email', $request->email)->first();
-
-//         if (Auth::attempt($request->only(['email', 'password']))) {
-// $token = $user->createToken('Pesonal Access Token')->plainTextToken;
-// $response = ['status' => 200, 'token' => $token, 'user' => $user, 'message' => 'Successfully Login!'];
-// return response()->json($response);
-//         } else if ($user == '[]') {
-//             $response = ['status' => 500, 'message' => 'No account found with this email!'];
-//             return response()->json($response);
-//         } else {
-//             $response = ['status' => 500, 'message' => 'Email or Password incorrect!'];
-//             return response()->json($response);
-//         }
-//     }
-// }
 class AuthController extends Controller
 {
     /**
@@ -81,6 +26,7 @@ class AuthController extends Controller
             $validateUser = Validator::make(
                 $request->all(),
                 [
+                    'Personal_id' => 'required',
                     'email' => 'required|string|unique:users',
                     'password' => 'required|string|min:8',
                     'first_name' => 'required|string',
@@ -88,7 +34,19 @@ class AuthController extends Controller
                     'phone_number' => 'required',
                     'gender' => 'required',
                     'is_active' => 'required',
-                    'address' => 'required'
+                    'address' => 'required',
+                    'Nationality' => 'required',
+                    'Ethnicity' => 'required',
+                    'Religion' => 'required',
+                    'Issue_Date' => 'required',
+                    'Issued_By' => 'required',
+                    'Start_Date' => 'required',
+                    'Language' => 'required',
+                    'Computer_Science' => 'required',
+                    'Permanent_Address' => 'required',
+                    'avatar' => 'required',
+                    'Role_id' => 'required',
+                    "Qualification" => 'required'
                 ]
             );
 
@@ -101,6 +59,8 @@ class AuthController extends Controller
             }
 
             $user = User::create([
+                'Personal_id' => $request->Personal_id,
+                'Qualification' => $request->Qualification,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'first_name' => $request->first_name,
@@ -109,7 +69,18 @@ class AuthController extends Controller
                 'gender' => $request->gender,
                 'is_active' => $request->is_active,
                 'birth_date' => now(),
-                'address' => $request->address
+                'address' => $request->address,
+                'Nationality' => $request->Nationality,
+                'Ethnicity' => $request->Ethnicity,
+                'Religion' => $request->Religion,
+                'Issue_Date' => $request->Issue_Date,
+                'Issued_By' => $request->Issued_By,
+                'Start_Date' => $request->Start_Date,
+                'Language' => $request->Language,
+                'Computer_Science' => $request->Computer_Science,
+                'Permanent_Address' => $request->Permanent_Address,
+                'avatar' => $request->avatar,
+                'Role_id' => $request->Role_id,
             ]);
 
             return response()->json([
