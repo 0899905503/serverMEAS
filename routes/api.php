@@ -38,7 +38,8 @@ Route::get('/getRoleById/{id}', [RoleController::class, 'getRoleById']);
 //_____________________LOGIN AND REGISTER__________________________
 Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
-
+Route::get('/auth/delete/{id}', [AuthController::class, 'deleteUser']);
+Route::put('/auth/updateUser/{id}', [AuthController::class, 'updateUserInfo']);
 // Get Ralatives
 
 Route::get('/getRelativesAndRelationships/{id}', [RelativeController::class, 'getRelativesAndRelationships']);
