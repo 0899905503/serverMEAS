@@ -33,7 +33,6 @@ class AuthController extends Controller
                     'last_name' => 'required|string',
                     'phone_number' => 'required',
                     'gender' => 'required',
-
                     'address' => 'required',
                     'Nationality' => 'required',
                     'Ethnicity' => 'required',
@@ -44,9 +43,10 @@ class AuthController extends Controller
                     'Language' => 'required',
                     'Computer_Science' => 'required',
                     'Permanent_Address' => 'required',
-
+                    'Department_id' => 'required',
                     'Role_id' => 'required',
-                    "Qualification" => 'required'
+                    'Qualification' => 'required',
+                    'Subsidy_id' => 'required',
                 ]
             );
 
@@ -67,7 +67,6 @@ class AuthController extends Controller
                 'last_name' => $request->last_name,
                 'phone_number' => $request->phone_number,
                 'gender' => $request->gender,
-
                 'birth_date' => now(),
                 'address' => $request->address,
                 'Nationality' => $request->Nationality,
@@ -79,8 +78,9 @@ class AuthController extends Controller
                 'Language' => $request->Language,
                 'Computer_Science' => $request->Computer_Science,
                 'Permanent_Address' => $request->Permanent_Address,
-
                 'Role_id' => $request->Role_id,
+                'Subsidy_id' => $request->Subsidy_id,
+                'Department_id' => $request->Department_id
             ]);
 
             return response()->json([
@@ -127,7 +127,12 @@ class AuthController extends Controller
             }
 
             $user = User::where('email', $request->email)->first();
-
+            // Check Remember Me
+            $rememberMe = $request->input('remember_me', false);
+            if ($rememberMe) {
+                // Save the user's information to shared_preferences
+                $this->rememberMe($request->email, $user->api_token);
+            }
             return response()->json([
                 $token = $user->createToken('Pesonal Access Token')->plainTextToken,
                 $response = ['status' => 200, 'token' => $token, 'user' => $user, 'message' => 'Successfully Login!'],
@@ -139,7 +144,18 @@ class AuthController extends Controller
             ], 500);
         }
     }
+    private function rememberMe($email, $token)
+    {
+        $rememberData = [
+            'email' => $email,
+            'token' => $token,
+        ];
 
+        $rememberData = json_encode($rememberData);
+
+        // Lưu thông tin vào shared_preferences
+        Redis::set('remember_me:' . $email, $rememberData);
+    }
     public function updateUserInfo(Request $request, $id)
     {
         try {
@@ -187,6 +203,8 @@ class AuthController extends Controller
                 'Computer_Science' => $request->Computer_Science,
                 'Permanent_Address' => $request->Permanent_Address,
                 'Role_id' => $request->Role_id,
+                'Subsidy_id' => $request->Subsidy_id,
+                'Department_id' => $request->Department_id
             ]);
 
             return response()->json([
@@ -240,5 +258,27 @@ class AuthController extends Controller
                 'message' => $th->getMessage(),
             ], 500);
         }
+    }
+    public function __invoke()
+    {
+        // Phương thức xử lý cho API logout
+    }
+    public function logout(Request $request)
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        // Lấy thông tin Remember Me từ shared_preferences
+        $rememberMeData = Redis::get('remember_me:' . Auth::user()->email);
+
+        // Nếu tồn tại thông tin Remember Me, xóa nó
+        if ($rememberMeData) {
+            Redis::del('remember_me:' . Auth::user()->email);
+        }
+
+        return response()->json(['message' => 'Logged out successfully']);
     }
 }

@@ -9,7 +9,7 @@ use App\Models\Relative;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ImageController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -47,6 +47,11 @@ Route::get('/getRelative', [RelativeController::class, 'getRelative']);
 Route::get('/getRelationship', [RelativeController::class, 'getRelationship']);
 
 
+Route::post('/storeImage', [ImageController::class, 'storeImage'])->middleware('auth:sanctum');
+Route::post('/logout', AuthController::class, 'logout')->middleware('auth:sanctum');
+
+//Create Relative
+Route::post('/api/createRelative', [RelativeController::class, 'createRelative']);
 //Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
 
 // Route::prefix('/auth')->controller(AuthController::class)->group(function () {

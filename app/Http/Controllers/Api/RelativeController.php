@@ -45,4 +45,48 @@ class RelativeController extends Controller
         $relation = Relationship::all();
         return response()->json(['relatives' => $relation], 200);
     }
+
+
+    public function createRelative(Request $request)
+    {
+        // Validate request data
+        $request->validate([
+            'hotentn' => 'required|string',
+            'ngaysinh' => 'required|date',
+            'diachi' => 'required|string',
+            'userId' => 'required|integer', // Thêm quy tắc xác thực cho trường userId
+            'relationship' => 'required|string' // Thêm quy tắc xác thực cho trường relationship
+        ]);
+
+        // Create Relative
+        $relative = Relative::create([
+            'hotentn' => $request->input('hotentn'),
+            'ngaysinh' => $request->input('ngaysinh'),
+            'diachi' => $request->input('diachi')
+        ]);
+
+        // Attach relationship with user
+        $userId = $request->input('userId');
+        $relationshipType = $request->input('relationship');
+
+        // Tìm người dùng có id tương ứng và kiểm tra xem nó tồn tại hay không
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // Tạo một mối quan hệ mới
+        $relationship = new Relationship();
+        $relationship->manv = $userId;
+        $relationship->matn = $relative->id; // Sử dụng id của relative vừa tạo
+        $relationship->loaiquanhe = $relationshipType;
+        $relationship->save();
+
+        // Return response with relative and relationship data
+        return response()->json([
+            'message' => 'Relative created successfully',
+            'relative' => $relative,
+            'relationship' => $relationship
+        ], 201);
+    }
 }

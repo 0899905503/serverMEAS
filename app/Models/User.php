@@ -65,10 +65,20 @@ class User extends Authenticatable
 		'Computer_Science',
 		'Permanent_Address',
 		'avatar',
-		'Role_id'
+		'Role_id',
+		'Subsidy_id',
+		'Department_id'
 	];
 	public function role()
 	{
 		return $this->belongsTo(Role::class, 'Role_id', 'id');
+	}
+	public function department()
+	{
+		return $this->belongsTo(Department::class, 'Department_id');
+	}
+	public function subsidy()
+	{
+		return $this->belongsTo(Subsidy::class, 'Subsidy_id');
 	}
 }
