@@ -51,7 +51,10 @@ Route::post('/storeImage', [ImageController::class, 'storeImage'])->middleware('
 Route::post('/logout', AuthController::class, 'logout')->middleware('auth:sanctum');
 
 //Create Relative
-Route::post('/api/createRelative', [RelativeController::class, 'createRelative']);
+Route::post('/createRelative', [RelativeController::class, 'createRelative']);
+//Delete Relative
+Route::get('/deleteRelative/{id}', [RelativeController::class, 'deleteRelative']);
+
 //Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
 
 // Route::prefix('/auth')->controller(AuthController::class)->group(function () {

@@ -89,4 +89,33 @@ class RelativeController extends Controller
             'relationship' => $relationship
         ], 201);
     }
+
+    public function deleteRelative($id)
+    {
+        try {
+            // Tìm người thân cần xóa
+            $relativeToDelete = Relative::find($id);
+
+            // Kiểm tra xem người thân tồn tại hay không
+            if (!$relativeToDelete) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Relative not found.',
+                ], 404);
+            }
+
+            // Thực hiện xóa người thân
+            $relativeToDelete->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Relative deleted successfully.',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
 }
