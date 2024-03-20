@@ -16,40 +16,46 @@ class SalaryscaleSeeder extends Seeder
         $salaryscales = [
             [
                 'mangach' => 1,
-                'bacluong' => 'BLCB',
+                'bacluong' => 1,
                 'hesoluong' => 1.0,
-                'manv' => 1
+                'manv' => 21,
+                'luongtheobac' => 7500000
             ],
             [
                 'mangach' => 2,
-                'bacluong' => 'BLTC',
+                'bacluong' => 2,
                 'hesoluong' => 1.2,
-                'manv' => 2
+                'manv' => 25,
+                'luongtheobac' => 7500000
             ],
             [
                 'mangach' => 3,
-                'bacluong' => 'BLCN',
+                'bacluong' => 3,
                 'hesoluong' => 1.5,
-                'manv' => 3
+                'manv' => 8,
+                'luongtheobac' => 7500000
             ],
             [
                 'mangach' => 4,
-                'bacluong' => 'BLQLCT',
+                'bacluong' => 4,
                 'hesoluong' => 1.8,
-                'manv' => 4
+                'manv' => 4, 'luongtheobac' => 7500000
+
             ],
             [
                 'mangach' => 5,
-                'bacluong' => 'BLQLCC',
+                'bacluong' => 5,
                 'hesoluong' => 2.0,
-                'manv' => 5
+                'manv' => 3,
+                'luongtheobac' => 7500000
             ],
 
             [
                 'mangach' => 6,
-                'bacluong' => 'BLLDCC',
+                'bacluong' => 6,
                 'hesoluong' => 2.5,
-                'manv' => 6
+                'manv' => 2,
+                'luongtheobac' => 7500000
             ],
         ];
         foreach ($salaryscales as $salaryscale) {

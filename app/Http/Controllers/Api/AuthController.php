@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Department;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Hash;
@@ -282,5 +283,23 @@ class AuthController extends Controller
         }
 
         return response()->json(['message' => 'Logged out successfully']);
+    }
+
+
+    public function getDepartmentName($userId)
+    {
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // Kiểm tra xem người dùng có phòng ban được liên kết hay không
+        if (!$user->department) {
+            return response()->json(['message' => 'Department not found for this user'], 404);
+        }
+
+        $departmentName = $user->department->department;
+        return response()->json(['userId' => $userId, 'department_name' => $departmentName], 200);
     }
 }

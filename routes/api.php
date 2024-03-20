@@ -10,6 +10,9 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\Api\SalaryController;
+use App\Http\Controllers\Api\SalaryDetailsController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -54,6 +57,17 @@ Route::post('/logout', AuthController::class, 'logout')->middleware('auth:sanctu
 Route::post('/createRelative', [RelativeController::class, 'createRelative']);
 //Delete Relative
 Route::get('/deleteRelative/{id}', [RelativeController::class, 'deleteRelative']);
+
+//department
+Route::get('/getDepartmentName/{id}', [AuthController::class, 'getDepartmentName']);
+
+//Salary
+Route::post('/calculateSalary', [SalaryController::class, 'calculateSalary']);
+Route::post('/getSalaryScaleByUserId/{id}', [SalaryController::class, 'getSalaryScaleByUserId']);
+//salary Details
+
+Route::post('/getSalaryDetails/{id}', [SalaryDetailsController::class, 'getSalaryDetails']);
+
 
 //Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
 
