@@ -68,6 +68,8 @@ Route::post('/getSalaryScaleByUserId/{id}', [SalaryController::class, 'getSalary
 
 Route::post('/getSalaryDetails/{id}', [SalaryDetailsController::class, 'getSalaryDetails']);
 
+Route::get('/countUserIds', [SalaryDetailsController::class, 'countUserIds']);
+Route::get('/getSalaryDetailsList', [SalaryDetailsController::class, 'getSalaryDetailsList']);
 
 //Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
 

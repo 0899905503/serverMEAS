@@ -27,6 +27,8 @@ class SalaryDetailsController extends Controller
         }
 
         $departmentName = $user->department->department;
+        $name = "$user->first_name $user->last_name";
+
 
         if (!$user) {
             return response()->json(['error' => 'Không tìm thấy nhân viên'], 404);
@@ -51,6 +53,7 @@ class SalaryDetailsController extends Controller
 
         return response()->json([
             'userId' => $userId,
+            'name' => $name,
             'department_name' => $departmentName,
             'mangach' => $mangach,
             'bacluong' => $bacluong,
@@ -59,5 +62,31 @@ class SalaryDetailsController extends Controller
             'luongtheobac' => $luongtheobac,
             'tongluong' => $tongluong
         ], 200);
+    }
+    public function countUserIds()
+    {
+        $userCount = User::count();
+
+        return response()->json([
+            'userCount' => $userCount
+        ], 200);
+    }
+    public function getSalaryDetailsList()
+    {
+        $salaryDetailsList = [];
+
+        $users = User::all();
+
+        foreach ($users as $user) {
+            $userId = $user->id;
+            $salaryDetails = $this->getSalaryDetails($userId);
+
+            $salaryDetailsList[] = $salaryDetails->original; // Lấy dữ liệu từ response
+
+            // Hoặc nếu bạn muốn lấy dữ liệu từ API mà không phải response, bạn có thể sử dụng phương thức getSalaryDetails() như sau:
+            // $salaryDetailsList[] = $this->getSalaryDetails($userId)->original;
+        }
+
+        return response()->json($salaryDetailsList, 200);
     }
 }
