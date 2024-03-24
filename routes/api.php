@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Api\SalaryController;
 use App\Http\Controllers\Api\SalaryDetailsController;
+use App\Http\Controllers\SalaryStatisticController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,13 +65,20 @@ Route::get('/getDepartmentName/{id}', [AuthController::class, 'getDepartmentName
 //Salary
 Route::post('/calculateSalary', [SalaryController::class, 'calculateSalary']);
 Route::post('/getSalaryScaleByUserId/{id}', [SalaryController::class, 'getSalaryScaleByUserId']);
+
 //salary Details
 
 Route::post('/getSalaryDetails/{id}', [SalaryDetailsController::class, 'getSalaryDetails']);
+Route::get('/showSalary', [SalaryController::class, 'showSalary']);
+Route::get('/showSalaryUser/{id}', [SalaryController::class, 'showSalaryUser']);
+
 
 Route::get('/countUserIds', [SalaryDetailsController::class, 'countUserIds']);
 Route::get('/getSalaryDetailsList', [SalaryDetailsController::class, 'getSalaryDetailsList']);
 
+
+/// CREATE SALARY STATISTIC
+Route::post('/createSalaryScale', [SalaryController::class, 'createSalaryScale']);
 //Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
 
 // Route::prefix('/auth')->controller(AuthController::class)->group(function () {

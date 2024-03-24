@@ -51,6 +51,9 @@ class SalaryDetailsController extends Controller
         $luongtheobac = $salaryScale->luongtheobac;
         $tongluong = $luongtheobac * $hesoluong;
 
+        // Bổ sung trường tháng tạo bảng lương
+        $month = $salaryScale->month;
+
         return response()->json([
             'userId' => $userId,
             'name' => $name,
@@ -60,7 +63,9 @@ class SalaryDetailsController extends Controller
             'hesoluong' => $hesoluong,
             'tenngach' => $rank->tenngach,
             'luongtheobac' => $luongtheobac,
-            'tongluong' => $tongluong
+            'tongluong' => $tongluong,
+            'thang' => $month // Thêm trường tháng tạo bảng lương
+
         ], 200);
     }
     public function countUserIds()

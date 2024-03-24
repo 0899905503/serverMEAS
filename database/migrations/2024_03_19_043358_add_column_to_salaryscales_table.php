@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('salaryscales', function (Blueprint $table) {
-            $table->string('luongtheobac')->nullable();
+            $table->string('luongtheobac')->after('manv');
+            $table->double('tongluong')->after('luongtheobac');
+            $table->dateTime('thang')->nullable()->after('tongluong');
         });
     }
 
@@ -22,7 +24,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('salaryscales', function (Blueprint $table) {
+            $table->dropColumn('tongluong');
             $table->dropColumn('luongtheobac');
+
+            $table->dropColumn('thang');
         });
     }
 };
