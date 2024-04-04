@@ -45,22 +45,24 @@ class SalaryController extends Controller
     {
         // Kiểm tra dữ liệu đầu vào
         $validatedData = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'manv' => 'required|exists:users,id',
             'mangach' => 'required',
             'bacluong' => 'required',
             'hesoluong' => 'required',
             'luongtheobac' => 'required',
-            'month' => ['required', 'date']
-        ]);
+            'thang' => ['required', 'date']
+        ]);  // Tính toán giá trị của 'tongluong'
+        $tongluong = $validatedData['luongtheobac'] * $validatedData['hesoluong'];
 
         // Tạo một bản ghi mới trong bảng SalaryScale
         $salaryScale = new SalaryScale();
-        $salaryScale->user_id = $validatedData['user_id'];
+        $salaryScale->manv = $validatedData['manv'];
         $salaryScale->mangach = $validatedData['mangach'];
         $salaryScale->bacluong = $validatedData['bacluong'];
         $salaryScale->hesoluong = $validatedData['hesoluong'];
         $salaryScale->luongtheobac = $validatedData['luongtheobac'];
-        $salaryScale->month = Carbon::parse($validatedData['month']);
+        $salaryScale->tongluong = $tongluong; // Gán giá trị của 'tongluong'
+        $salaryScale->thang = Carbon::parse($validatedData['thang']);
         $salaryScale->save();
 
         // Trả về thông tin của bản ghi mới đã tạo
