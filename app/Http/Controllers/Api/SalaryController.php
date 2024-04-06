@@ -128,4 +128,79 @@ class SalaryController extends Controller
             'luongtheobac' => $luongtheobac
         ], 200);
     }
+
+    public function showSalaryByMonth($id, $month, $year)
+    {
+        // Tìm nhân viên theo ID
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['error' => 'Không tìm thấy nhân viên'], 404);
+        }
+
+        // Lấy thông tin lương của nhân viên theo tháng
+        $salaryScale = SalaryScale::where('manv', $id)
+            ->whereMonth('thang', $month)
+            ->whereYear('thang', $year)
+
+            ->first();
+
+        if (!$salaryScale) {
+            return response()->json(['error' => 'Không tìm thấy thông tin lương cho nhân viên trong tháng đã chọn'], 404);
+        }
+
+        // Lấy thông tin ngạch của hệ số lương
+        $rank = $salaryScale->rank;
+
+        // Lấy hệ số lương và bậc lương
+        $mangach = $salaryScale->mangach;
+        $bacluong = $salaryScale->bacluong;
+        $hesoluong = $salaryScale->hesoluong;
+        $luongtheobac = $salaryScale->luongtheobac;
+        $tongluong = $luongtheobac * $hesoluong;
+        return response()->json([
+            'mangach' => $mangach,
+            'bacluong' => $bacluong,
+            'hesoluong' => $hesoluong,
+            'tenngach' => $rank->tenngach,
+            'luongtheobac' => $luongtheobac,
+            'tongluong' => $tongluong,
+            'thang' => $salaryScale->thang
+        ], 200);
+    }
+
+    public function showSalariesByMonthAndYear($year, $month)
+    {
+        // Lấy tất cả các bản ghi lương trong tháng và năm chỉ định
+        $salaries = SalaryScale::whereYear('thang', $year)
+            ->whereMonth('thang', $month)
+            ->get();
+
+        if ($salaries->isEmpty()) {
+            return response()->json(['error' => 'Không có thông tin lương cho tháng và năm đã chọn'], 404);
+        }
+
+        // Tạo một mảng chứa thông tin lương của các nhân viên
+        $salariesData = [];
+
+        foreach ($salaries as $salary) {
+            // Kiểm tra xem $salary->user có tồn tại hay không
+            if ($salary->user) {
+                $user = $salary->user;
+                $rank = $salary->rank;
+
+                $salariesData[] = [
+                    'manv' => $user->id,
+                    'ten' => $user->ten,
+                    'mangach' => $salary->mangach,
+                    'bacluong' => $salary->bacluong,
+                    'hesoluong' => $salary->hesoluong,
+                    'tenngach' => $rank->tenngach,
+                    'luongtheobac' => $salary->luongtheobac,
+                    'thang' => $salary->thang
+                ];
+            }
+        }
+        return response()->json($salariesData, 200);
+    }
 }

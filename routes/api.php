@@ -79,6 +79,8 @@ Route::get('/getSalaryDetailsList', [SalaryDetailsController::class, 'getSalaryD
 
 /// CREATE SALARY STATISTIC
 Route::post('/createSalaryScale', [SalaryController::class, 'createSalaryScale']);
+Route::get('/salary/{id}/{month}/{year}', [SalaryController::class, 'showSalaryByMonth']);
+Route::get('/showSalariesByMonthAndYear/{year}/{month} ', [SalaryController::class, 'showSalariesByMonthAndYear']);
 //Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
 
 // Route::prefix('/auth')->controller(AuthController::class)->group(function () {
