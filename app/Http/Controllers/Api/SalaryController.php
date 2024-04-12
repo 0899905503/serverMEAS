@@ -146,7 +146,7 @@ class SalaryController extends Controller
             ->first();
 
         if (!$salaryScale) {
-            return response()->json(['error' => 'Không tìm thấy thông tin lương cho nhân viên trong tháng đã chọn'], 404);
+            return response()->json(['error' => 'NOT FOUND !!!'], 404);
         }
 
         // Lấy thông tin ngạch của hệ số lương
@@ -176,8 +176,9 @@ class SalaryController extends Controller
             ->whereMonth('thang', $month)
             ->get();
 
+
         if ($salaries->isEmpty()) {
-            return response()->json(['error' => 'Không có thông tin lương cho tháng và năm đã chọn'], 404);
+            return response()->json(['error' => 'Not found1'], 404);
         }
 
         // Tạo một mảng chứa thông tin lương của các nhân viên
@@ -185,13 +186,13 @@ class SalaryController extends Controller
 
         foreach ($salaries as $salary) {
             // Kiểm tra xem $salary->user có tồn tại hay không
-            if ($salary->user) {
-                $user = $salary->user;
+            // if (!$salary->user) return 'a';
+            if ($salary->employee) {
+                $user = $salary->employee;
                 $rank = $salary->rank;
-
                 $salariesData[] = [
                     'manv' => $user->id,
-                    'ten' => $user->ten,
+                    'tennv' => $user->first_name,
                     'mangach' => $salary->mangach,
                     'bacluong' => $salary->bacluong,
                     'hesoluong' => $salary->hesoluong,
