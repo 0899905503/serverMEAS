@@ -10,6 +10,18 @@ use App\Models\SalaryScale;
 class SalaryDetailsController extends Controller
 {
 
+    public function salaryHistory($userId)
+    {
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $salaryHistory = SalaryScale::where('manv', $userId)->orderBy('thang', 'desc')->get();
+
+        return response()->json(['user' => $user, 'salary_history' => $salaryHistory]);
+    }
     public function getSalaryDetails($userId)
     {
         // Tìm nhân viên theo ID

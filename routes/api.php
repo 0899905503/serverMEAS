@@ -75,7 +75,7 @@ Route::get('/showSalaryUser/{id}', [SalaryController::class, 'showSalaryUser']);
 
 Route::get('/countUserIds', [SalaryDetailsController::class, 'countUserIds']);
 Route::get('/getSalaryDetailsList', [SalaryDetailsController::class, 'getSalaryDetailsList']);
-
+Route::get('/salaryHistory/{id}', [SalaryDetailsController::class, 'salaryHistory']);
 
 /// CREATE SALARY STATISTIC
 Route::post('/createSalaryScale', [SalaryController::class, 'createSalaryScale']);
