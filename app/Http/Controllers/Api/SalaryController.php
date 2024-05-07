@@ -51,7 +51,20 @@ class SalaryController extends Controller
             'hesoluong' => 'required',
             'luongtheobac' => 'required',
             'thang' => ['required', 'date']
-        ]);  // Tính toán giá trị của 'tongluong'
+        ]);
+
+        // Kiểm tra xem đã tồn tại bản ghi lương cho nhân viên này trong tháng đã cho chưa
+        $existingSalaryScale = SalaryScale::where('manv', $validatedData['manv'])
+            ->whereYear('thang', Carbon::parse($validatedData['thang'])->year)
+            ->whereMonth('thang', Carbon::parse($validatedData['thang'])->month)
+            ->exists();
+
+        if ($existingSalaryScale) {
+            // Nếu đã tồn tại, trả về thông báo lỗi
+            return response()->json(['error' => 'Nhân viên này đã nhận lương trong tháng này.'], 400);
+        }
+
+        // Tính toán giá trị của 'tongluong'
         $tongluong = $validatedData['luongtheobac'] * $validatedData['hesoluong'];
 
         // Tạo một bản ghi mới trong bảng SalaryScale
@@ -169,13 +182,13 @@ class SalaryController extends Controller
         ], 200);
     }
 
+
     public function showSalariesByMonthAndYear($year, $month)
     {
         // Lấy tất cả các bản ghi lương trong tháng và năm chỉ định
         $salaries = SalaryScale::whereYear('thang', $year)
             ->whereMonth('thang', $month)
             ->get();
-
 
         if ($salaries->isEmpty()) {
             return response()->json(['error' => 'Not found1'], 404);
@@ -185,11 +198,26 @@ class SalaryController extends Controller
         $salariesData = [];
 
         foreach ($salaries as $salary) {
-            // Kiểm tra xem $salary->user có tồn tại hay không
-            // if (!$salary->user) return 'a';
             if ($salary->employee) {
                 $user = $salary->employee;
+
+                // Lấy thông tin phòng ban và chức vụ từ API getDepartmentAndRoleByUserId
+                $departmentResponse = $this->getDepartmentAndRoleByUserId($user->id);
+                $departmentAndRoleData = json_decode($departmentResponse->content(), true);
+
+                // Kiểm tra xem có lỗi không
+                if (isset($departmentAndRoleData['error'])) {
+                    // Nếu có lỗi, gán giá trị mặc định
+                    $department = 'Chưa có phòng ban';
+                    $position = 'Chưa có chức vụ';
+                } else {
+                    // Nếu không có lỗi, lấy thông tin từ dữ liệu trả về
+                    $department = $departmentAndRoleData['department_name'];
+                    $position = $departmentAndRoleData['role'];
+                }
+
                 $rank = $salary->rank;
+                $tongluong = $salary->luongtheobac * $salary->hesoluong;
                 $salariesData[] = [
                     'manv' => $user->id,
                     'tennv' => $user->first_name,
@@ -198,10 +226,35 @@ class SalaryController extends Controller
                     'hesoluong' => $salary->hesoluong,
                     'tenngach' => $rank->tenngach,
                     'luongtheobac' => $salary->luongtheobac,
+                    'tongluong' => $tongluong,
+                    'phongban' => $department, // Thêm thông tin phòng ban vào dữ liệu trả về
+                    'chucvu' => $position, // Thêm thông tin chức vụ vào dữ liệu trả về
                     'thang' => $salary->thang
                 ];
             }
         }
         return response()->json($salariesData, 200);
+    }
+
+
+    public function getDepartmentAndRoleByUserId($userId)
+    {
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Kiểm tra xem người dùng có phòng ban được liên kết hay không
+        $departmentName = $user->department ? $user->department->department : 'Department not found';
+
+        // Lấy chức vụ của người dùng
+        $role = $user->role ? $user->role->tenchucvu : 'Role not found';
+
+        return response()->json([
+            'userId' => $userId,
+            'department_name' => $departmentName,
+            'role' => $role
+        ], 200);
     }
 }
