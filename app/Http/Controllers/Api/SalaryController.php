@@ -257,4 +257,22 @@ class SalaryController extends Controller
             'role' => $role
         ], 200);
     }
+    public function checkIfSalaryExists(Request $request)
+    {
+        // Kiểm tra dữ liệu đầu vào
+        $validatedData = $request->validate([
+            'manv' => 'required|string',
+            'thang' => 'required|date',
+        ]);
+
+        $manv = $validatedData['manv'];
+        $thang = Carbon::parse($validatedData['thang']);
+
+        $salaryExists = SalaryScale::where('manv', $manv)
+            ->whereYear('thang', $thang->year)
+            ->whereMonth('thang', $thang->month)
+            ->exists();
+
+        return response()->json(['exists' => $salaryExists]);
+    }
 }

@@ -1,30 +1,10 @@
 <?php
 
-/**
- * Created by Reliese Model.
- */
-
 namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * Class Employeediscipline
- * 
- * @property int $id
- * @property int $manv
- * @property int $makyluat
- * @property string $lydo
- * @property Carbon $ngaykyluat
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * 
- * @property Discipline $discipline
- * @property Employee $employee
- *
- * @package App\Models
- */
 class Employeediscipline extends Model
 {
 	protected $table = 'employeedisciplines';
@@ -32,14 +12,16 @@ class Employeediscipline extends Model
 	protected $casts = [
 		'manv' => 'int',
 		'makyluat' => 'int',
-		'ngaykyluat' => 'datetime'
+		'ngaykyluat' => 'datetime',
+		'tienphat' => 'float' // Thêm dòng này
 	];
 
 	protected $fillable = [
 		'manv',
 		'makyluat',
 		'lydo',
-		'ngaykyluat'
+		'ngaykyluat',
+		'tienphat' // Thêm dòng này
 	];
 
 	public function discipline()

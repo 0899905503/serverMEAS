@@ -29,4 +29,10 @@ class UserController extends Controller
 
         return response()->json(['employee' => $employee], 200);
     }
+    public function getAllEmployeeIds()
+    {
+        $employeeIds = User::pluck('id');
+
+        return response()->json(['employee_ids' => $employeeIds], 200);
+    }
 }

@@ -100,8 +100,7 @@ class SalaryDetailsController extends Controller
 
             $salaryDetailsList[] = $salaryDetails->original; // Lấy dữ liệu từ response
 
-            // Hoặc nếu bạn muốn lấy dữ liệu từ API mà không phải response, bạn có thể sử dụng phương thức getSalaryDetails() như sau:
-            // $salaryDetailsList[] = $this->getSalaryDetails($userId)->original;
+
         }
 
         return response()->json($salaryDetailsList, 200);

@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RelativeController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RoleController;
+
 use App\Models\Employee;
 use App\Models\Relative;
 use App\Models\Role;
@@ -12,8 +13,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Api\SalaryController;
 use App\Http\Controllers\Api\SalaryDetailsController;
+use App\Http\Controllers\Api\EmployeeDisciplineController;
 use App\Http\Controllers\SalaryStatisticController;
-
+use App\Http\Controllers\Api\DisciplineController;
+use App\Http\Controllers\Api\BonusController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -64,7 +67,7 @@ Route::get('/getDepartmentName/{id}', [AuthController::class, 'getDepartmentName
 
 //Salary
 Route::post('/calculateSalary', [SalaryController::class, 'calculateSalary']);
-Route::post('/getSalaryScaleByUserId/{id}', [SalaryController::class, 'getSalaryScaleByUserId']);
+Route::get('/getSalaryScaleByUserId/{id}', [SalaryController::class, 'getSalaryScaleByUserId']);
 
 //salary Details
 
@@ -82,6 +85,19 @@ Route::post('/createSalaryScale', [SalaryController::class, 'createSalaryScale']
 Route::get('/getDepartmentAndRoleByUserId/{id}', [SalaryController::class, 'getDepartmentAndRoleByUserId']);
 Route::get('/salary/{id}/{month}/{year}', [SalaryController::class, 'showSalaryByMonth']);
 Route::get('/showSalariesByMonthAndYear/{year}/{month} ', [SalaryController::class, 'showSalariesByMonthAndYear']);
+Route::get('/getAllEmployeeIds', [UserController::class, 'getAllEmployeeIds']);
+Route::post('/checkIfSalaryExists', [SalaryController::class, 'checkIfSalaryExists']);
+
+
+// CREATE DISCIPLINE
+Route::post('/store', [EmployeeDisciplineController::class, 'store']);
+Route::get('/disciplines', [DisciplineController::class, 'index']);
+Route::get('/disciplines/{id}', [DisciplineController::class, 'show']);
+//CREATE BONUS
+
+Route::post('/bonus', [BonusController::class, 'createEmployeeBonus']);
+Route::get('/bonusid', [BonusController::class, 'index']);
+Route::get('/bonus/{id}', [BonusController::class, 'show']);
 //Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
 
 // Route::prefix('/auth')->controller(AuthController::class)->group(function () {
