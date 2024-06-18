@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SalaryScale; // Import model SalaryScale
 use App\Models\User;
+use App\Models\EmployeeBonus;
+use App\Models\EmployeeDiscipline;
 use Carbon\Carbon;
 
 class SalaryController extends Controller
@@ -191,7 +193,7 @@ class SalaryController extends Controller
             ->get();
 
         if ($salaries->isEmpty()) {
-            return response()->json(['error' => 'Not found1'], 404);
+            return response()->json(['error' => 'Not found'], 404);
         }
 
         // Tạo một mảng chứa thông tin lương của các nhân viên
@@ -216,8 +218,22 @@ class SalaryController extends Controller
                     $position = $departmentAndRoleData['role'];
                 }
 
+                // Truy vấn tổng tiền thưởng của nhân viên trong tháng và năm đã cho
+                $tienthuong = EmployeeBonus::where('manv', $user->id)
+                    ->whereYear('ngaykhenthuong', $year)
+                    ->whereMonth('ngaykhenthuong', $month)
+                    ->sum('tienthuong');
+
+                // Truy vấn tổng tiền phạt của nhân viên trong tháng và năm đã cho
+                $tienphat = Employeediscipline::where('manv', $user->id)
+                    ->whereYear('ngaykyluat', $year)
+                    ->whereMonth('ngaykyluat', $month)
+                    ->sum('tienphat');
+
+                // Tính toán tổng lương
+                $tongluong = ($salary->luongtheobac * $salary->hesoluong) + $tienthuong - $tienphat;
+
                 $rank = $salary->rank;
-                $tongluong = $salary->luongtheobac * $salary->hesoluong;
                 $salariesData[] = [
                     'manv' => $user->id,
                     'tennv' => $user->first_name,
@@ -226,6 +242,8 @@ class SalaryController extends Controller
                     'hesoluong' => $salary->hesoluong,
                     'tenngach' => $rank->tenngach,
                     'luongtheobac' => $salary->luongtheobac,
+                    'tienthuong' => $tienthuong,
+                    'tienphat' => $tienphat,
                     'tongluong' => $tongluong,
                     'phongban' => $department, // Thêm thông tin phòng ban vào dữ liệu trả về
                     'chucvu' => $position, // Thêm thông tin chức vụ vào dữ liệu trả về
@@ -235,7 +253,6 @@ class SalaryController extends Controller
         }
         return response()->json($salariesData, 200);
     }
-
 
     public function getDepartmentAndRoleByUserId($userId)
     {

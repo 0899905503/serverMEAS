@@ -93,11 +93,16 @@ Route::post('/checkIfSalaryExists', [SalaryController::class, 'checkIfSalaryExis
 Route::post('/store', [EmployeeDisciplineController::class, 'store']);
 Route::get('/disciplines', [DisciplineController::class, 'index']);
 Route::get('/disciplines/{id}', [DisciplineController::class, 'show']);
+Route::get('/showDisciplinesByMonth/{month}/{year}', [EmployeeDisciplineController::class, 'showDisciplinesByMonth']);
+Route::get('/showDisciplinesByEmployeeId/{id}', [EmployeeDisciplineController::class, 'showDisciplinesByEmployeeId']);
 //CREATE BONUS
 
 Route::post('/bonus', [BonusController::class, 'createEmployeeBonus']);
 Route::get('/bonusid', [BonusController::class, 'index']);
 Route::get('/bonus/{id}', [BonusController::class, 'show']);
+Route::get('/showBonusesByMonth/{month}/{year}', [BonusController::class, 'showBonusesByMonth']);
+Route::get('/showBonusesByEmployeeId/{id}', [BonusController::class, 'showBonusesByEmployeeId']);
+
 //Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
 
 // Route::prefix('/auth')->controller(AuthController::class)->group(function () {
