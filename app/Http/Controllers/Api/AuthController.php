@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -22,6 +22,7 @@ class AuthController extends Controller
      */
     public function createUser(Request $request)
     {
+        DB::beginTransaction();
         try {
             //Validated
             $validateUser = Validator::make(
@@ -84,12 +85,13 @@ class AuthController extends Controller
                 'Subsidy_id' => $request->Subsidy_id,
                 'Department_id' => $request->Department_id
             ]);
-
+            DB::commit();
             return response()->json([
                 $token = $user->createToken('Personal access token')->plainTextToken,
                 $response = ['user' => $user, 'token' => $token],
             ], 200);
         } catch (\Throwable $th) {
+            DB::rollBack();
             return response()->json([
                 'status' => false,
                 'message' => $th->getMessage()

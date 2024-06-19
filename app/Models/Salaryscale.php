@@ -33,7 +33,8 @@ class Salaryscale extends Model
 		'mangach' => 'int',
 		'bacluong' => 'float',
 		'hesoluong' => 'float',
-		'manv' => 'int'
+		'manv' => 'int',
+		'thang' => 'datetime:Y-m-d'
 	];
 
 	protected $fillable = [

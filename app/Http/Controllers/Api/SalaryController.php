@@ -34,14 +34,58 @@ class SalaryController extends Controller
             return response()->json(['error' => 'Không tìm thấy thông tin người dùng'], 404);
         }
 
-        $salaryScale = SalaryScale::where('manv', $id)->first();
+        // Lấy tất cả các bản ghi lương của nhân viên có ID là $id và sắp xếp theo tháng giảm dần
+        $salaryScales = SalaryScale::where('manv', $id)
+            ->orderBy('thang', 'asc') // Sắp xếp theo tháng giảm dần
+            ->get();
 
-        if (!$salaryScale) {
+        if ($salaryScales->isEmpty()) {
             return response()->json(['error' => 'Không tìm thấy thông tin lương nhân viên'], 404);
         }
 
-        return response()->json($salaryScale);
+        $salaryData = [];
+
+        foreach ($salaryScales as $salaryScale) {
+
+            // Lấy tháng và năm từ bản ghi lương hiện tại
+            $month = date('m', strtotime($salaryScale->thang));
+            $year = date('Y', strtotime($salaryScale->thang));
+
+            // Lấy tiền thưởng từ bảng EmployeeBonus cho tháng và năm tương ứng
+            $employeeBonus = EmployeeBonus::where('manv', $id)
+                ->whereMonth('ngaykhenthuong', $month)
+                ->whereYear('ngaykhenthuong', $year)
+                ->sum('tienthuong');
+
+            // Lấy tiền phạt từ bảng EmployeeDiscipline cho tháng và năm tương ứng
+            $employeeDiscipline = EmployeeDiscipline::where('manv', $id)
+                ->whereMonth('ngaykyluat', $month)
+                ->whereYear('ngaykyluat', $year)
+                ->sum('tienphat');
+
+            // Tính tổng lương theo công thức yêu cầu
+            $hesoluong = $salaryScale->hesoluong;
+            $luongtheobac = $salaryScale->luongtheobac;
+            $tongluong = $hesoluong * $luongtheobac + $employeeBonus - $employeeDiscipline;
+
+            // Tạo mảng dữ liệu cho từng bản ghi lương
+            $salaryData[] = [
+                'id' => $salaryScale->id,
+                'thang' => $salaryScale->thang,
+                'mangach' => $salaryScale->mangach,
+                'bacluong' => $salaryScale->bacluong,
+                'hesoluong' => $hesoluong,
+                'luongtheobac' => $luongtheobac,
+                'tienthuong' => $employeeBonus,
+                'tienphat' => $employeeDiscipline,
+                'tongluong' => $tongluong,
+            ];
+        }
+
+        // Trả về JSON response
+        return response()->json($salaryData);
     }
+
 
     public function createSalaryScale(Request $request)
     {
@@ -66,8 +110,22 @@ class SalaryController extends Controller
             return response()->json(['error' => 'Nhân viên này đã nhận lương trong tháng này.'], 400);
         }
 
+        // Lấy dữ liệu tiền thưởng và tiền phạt cho tháng và năm cụ thể
+        $month = Carbon::parse($validatedData['thang'])->month;
+        $year = Carbon::parse($validatedData['thang'])->year;
+
+        $bonus = EmployeeBonus::where('manv', $validatedData['manv'])
+            ->whereYear('ngaykhenthuong', $year)
+            ->whereMonth('ngaykhenthuong', $month)
+            ->sum('tienthuong');
+
+        $penalty = EmployeeDiscipline::where('manv', $validatedData['manv'])
+            ->whereYear('ngaykyluat', $year)
+            ->whereMonth('ngaykyluat', $month)
+            ->sum('tienphat');
+
         // Tính toán giá trị của 'tongluong'
-        $tongluong = $validatedData['luongtheobac'] * $validatedData['hesoluong'];
+        $tongluong = ($validatedData['luongtheobac'] * $validatedData['hesoluong']) + $bonus - $penalty;
 
         // Tạo một bản ghi mới trong bảng SalaryScale
         $salaryScale = new SalaryScale();
@@ -83,6 +141,7 @@ class SalaryController extends Controller
         // Trả về thông tin của bản ghi mới đã tạo
         return response()->json($salaryScale, 200);
     }
+
 
     public function calculateSalary(Request $request)
     {
@@ -153,37 +212,48 @@ class SalaryController extends Controller
             return response()->json(['error' => 'Không tìm thấy nhân viên'], 404);
         }
 
-        // Lấy thông tin lương của nhân viên theo tháng
+        // Lấy thông tin lương của nhân viên theo tháng từ bảng SalaryScale
         $salaryScale = SalaryScale::where('manv', $id)
             ->whereMonth('thang', $month)
             ->whereYear('thang', $year)
-
             ->first();
 
         if (!$salaryScale) {
             return response()->json(['error' => 'NOT FOUND !!!'], 404);
         }
 
-        // Lấy thông tin ngạch của hệ số lương
-        $rank = $salaryScale->rank;
-
-        // Lấy hệ số lương và bậc lương
-        $mangach = $salaryScale->mangach;
-        $bacluong = $salaryScale->bacluong;
+        // Lấy hệ số lương và lương theo bậc từ bảng SalaryScale
         $hesoluong = $salaryScale->hesoluong;
         $luongtheobac = $salaryScale->luongtheobac;
-        $tongluong = $luongtheobac * $hesoluong;
+
+        // Tính tổng lương dựa trên hệ số lương và lương theo bậc
+        $tongluong = $hesoluong * $luongtheobac;
+
+        // Lấy tiền thưởng từ bảng EmployeeBonus
+        $employeeBonus = EmployeeBonus::where('manv', $id)
+            ->whereMonth('ngaykhenthuong', $month)
+            ->whereYear('ngaykhenthuong', $year)
+            ->sum('tienthuong');
+
+        // Lấy tiền phạt từ bảng EmployeeDiscipline
+        $employeeDiscipline = EmployeeDiscipline::where('manv', $id)
+            ->whereMonth('ngaykyluat', $month)
+            ->whereYear('ngaykyluat', $year)
+            ->sum('tienphat');
+
+        // Tính tổng lương cuối cùng
+        $tongluong = $tongluong + $employeeBonus - $employeeDiscipline;
+
+        // Trả về JSON response
         return response()->json([
-            'mangach' => $mangach,
-            'bacluong' => $bacluong,
             'hesoluong' => $hesoluong,
-            'tenngach' => $rank->tenngach,
             'luongtheobac' => $luongtheobac,
+            'tienthuong' => $employeeBonus,
+            'tienphat' => $employeeDiscipline,
             'tongluong' => $tongluong,
             'thang' => $salaryScale->thang
         ], 200);
     }
-
 
     public function showSalariesByMonthAndYear($year, $month)
     {
@@ -236,7 +306,7 @@ class SalaryController extends Controller
                 $rank = $salary->rank;
                 $salariesData[] = [
                     'manv' => $user->id,
-                    'tennv' => $user->first_name,
+                    'tennv' => "$user->first_name $user->last_name",
                     'mangach' => $salary->mangach,
                     'bacluong' => $salary->bacluong,
                     'hesoluong' => $salary->hesoluong,
